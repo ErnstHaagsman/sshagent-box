@@ -1,0 +1,40 @@
+---
+- hosts: all
+  become: yes
+
+  vars:
+    username: example
+    password: hunter2
+
+  tasks:
+    - name: Install Python 3
+      apt:
+        name: "{{ item }}"
+        state: latest
+        update_cache: yes
+      with_items:
+        - python3
+
+
+    - name: Create user to authenticate as
+      user:
+        name: "{{ username }}"
+        shell: /bin/bash
+        password: "{{ password | password_hash('sha512') }}"
+
+
+    - name: Add user to sudoers
+      lineinfile:
+        dest: /etc/sudoers
+        state: present
+        line: "{{ username }} ALL=(ALL) ALL"
+        validate: 'visudo -cf %s'
+
+
+    - name: Add authorized key
+      authorized_key:
+        user: "{{ username }}"
+        state: present
+        key: "{{ lookup('file', 'files/key.pub') }}"
+
+
