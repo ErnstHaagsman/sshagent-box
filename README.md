@@ -1,7 +1,7 @@
 SSH Agent Test Box
 ==================
 
-[See the blog post](https://blog.jetbrains.com/pycharm) 
+[See the blog post](https://blog.jetbrains.com/pycharm/2017/08/ssh-agent-simplify-ssh-keys/) 
 for additional information.
 
 To use
